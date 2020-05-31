@@ -26,8 +26,14 @@ void setup() {
 }
 
 void loop() {
-  displayLcdInfos(getTemperature(getVoltage(analogRead(SENSOR_TEMP))));
-  delay(3000);
+  float temp = getTemperature(getVoltage(analogRead(SENSOR_TEMP)));
+  displayLcdInfos(temp);
+  if(temp > TEMP_LIMIT) {
+    digitalWrite(MOTOR_PIN, HIGH);
+  }else{
+    digitalWrite(MOTOR_PIN, LOW);
+  }
+  delay(1000);
 }
 
 /**
@@ -46,11 +52,6 @@ void displayLcdInfos(float temperature) {
   lcd.setCursor(0,1);
   lcd.print("Temp: ");
   lcd.print(temperature);
-  if(temperature > TEMP_LIMIT) {
-    digitalWrite(MOTOR_PIN, HIGH);
-  }else{
-    digitalWrite(MOTOR_PIN, LOW);
-  }
 }
 
 /**
